@@ -4,10 +4,14 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
 	profiles="urn:mpeg:dash:profile:isoff-live:2011"
-	type="static"
-	mediaPresentationDuration="PT26M30.6S"
+	type="dynamic"
+	minimumUpdatePeriod="PT6S"
+	suggestedPresentationDelay="PT6S"
+	availabilityStartTime="2024-06-04T13:59:01.555Z"
+	publishTime="2024-06-04T14:40:25.098Z"
+	timeShiftBufferDepth="PT18.0S"
 	maxSegmentDuration="PT5.0S"
-	minBufferTime="PT11.9S">
+	minBufferTime="PT12.0S">
 	<ProgramInformation>
 	</ProgramInformation>
 	<ServiceDescription id="0">
@@ -16,22 +20,21 @@
 		<AdaptationSet id="0" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true">
 			<Representation id="0" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="163840" audioSamplingRate="48000">
 				<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2" />
-				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="316">
+				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="493">
 					<SegmentTimeline>
-						<S t="75801552" d="240672" />
-						<S d="240624" />
-						<S d="68592" />
+						<S t="118394832" d="240672" />
+						<S d="240624" r="1" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet id="1" contentType="video" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true" frameRate="60/1" maxWidth="1920" maxHeight="1080" par="16:9">
 			<Representation id="1" mimeType="video/mp4" codecs="avc1.64002a" bandwidth="10240000" width="1920" height="1080" sar="1:1">
-				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="264">
+				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="412">
 					<SegmentTimeline>
-						<S t="25247984" d="96272" />
+						<S t="39455984" d="96272" />
 						<S d="95728" />
-						<S d="10928" />
+						<S d="96272" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Dropdown, Navbar } from 'react-bootstrap';
 import { Link, BrowserRouter as Router, useLocation, useMatch } from 'react-router-dom';
 import 'video.js/dist/video-js.css';
@@ -9,6 +9,13 @@ import VideoPlayer from './video.js';
 
 function App() {
   const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    const storedUrl = localStorage.getItem('videoUrl');
+    if (storedUrl) {
+      setUrl(storedUrl);
+    }
+  }, []);
 
   const sources = url
     ? [
@@ -21,6 +28,7 @@ function App() {
 
   const handleInitialize = (inputUrl) => {
     setUrl(inputUrl);
+    localStorage.setItem('videoUrl', inputUrl);
   };
 
   return (
@@ -36,10 +44,11 @@ function App() {
 }
 
 function InputFields({ url, setUrl, handleInitialize }) {
-  const [inputUrl, setInputUrl] = useState('');
+  const [inputUrl, setInputUrl] = useState(localStorage.getItem('videoUrl') || '');
 
   const handleUrlChange = (e) => {
     setInputUrl(e.target.value);
+    localStorage.setItem('url', e.target.value);
   };
 
   return (
