@@ -28,6 +28,30 @@ function App() {
   );
 }
 
+function InputFields() {
+  return (
+    <div className="input-wrapper">
+      <h2>Input</h2>
+      <div className="input-group">
+        <label htmlFor="url">URL:</label>
+        <input type="text" id="url" placeholder="Enter URL" />
+      </div>
+      <div className="input-group">
+        <label htmlFor="key">Key:</label>
+        <input type="text" id="key" placeholder="Enter Key" />
+      </div>
+      <div className="input-group">
+        <label htmlFor="user">User:</label>
+        <input type="text" id="user" placeholder="Enter User" />
+      </div>
+      <div className="input-group">
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter Password" />
+      </div>
+    </div>
+  );
+}
+
 function AppContent({ videoJsOptions }) {
   const location = useLocation();
   const pageTitle = location.pathname.substring(1);
@@ -59,15 +83,12 @@ function AppContent({ videoJsOptions }) {
         </Container>
       </Navbar>
       <div className="app-container">
-        <div className="player-wrapper">
-          <VideoPlayer {...videoJsOptions} />
-        </div>
-        {isInputPage && (
-          <div className="input-page-content">
-            <h2>Input Page Content</h2>
-            <p>This is the content for the input page.</p>
+        <div className="player-input-wrapper">
+          <div className="player-wrapper">
+            <VideoPlayer {...videoJsOptions} />
           </div>
-        )}
+          {isInputPage && <InputFields />}
+        </div>
       </div>
     </div>
   );

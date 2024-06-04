@@ -37,6 +37,48 @@
   height: calc(100vh - 100px);
 }
 
+.player-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 200px;
+}
+
+.player-wrapper {
+  margin-right: 20px;
+}
+
+.input-wrapper {
+  background-color: #1c1c1c;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.input-wrapper h2 {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.input-group {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.input-group label {
+  color: #fff;
+  width: 80px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.input-group input {
+  width: 200px;
+  padding: 5px;
+  font-size: 14px;
+}
+
 .video-js {
   height: 540px;
   width: 960px;
