@@ -5,9 +5,9 @@
 	xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
 	profiles="urn:mpeg:dash:profile:isoff-live:2011"
 	type="static"
-	mediaPresentationDuration="PT1H8M43.8S"
+	mediaPresentationDuration="PT26M30.6S"
 	maxSegmentDuration="PT5.0S"
-	minBufferTime="PT12.0S">
+	minBufferTime="PT11.9S">
 	<ProgramInformation>
 	</ProgramInformation>
 	<ServiceDescription id="0">
@@ -16,21 +16,22 @@
 		<AdaptationSet id="0" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true">
 			<Representation id="0" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="163840" audioSamplingRate="48000">
 				<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2" />
-				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="821">
+				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="316">
 					<SegmentTimeline>
-						<S t="197324784" d="240624" r="1" />
-						<S d="139296" />
+						<S t="75801552" d="240672" />
+						<S d="240624" />
+						<S d="68592" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet id="1" contentType="video" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true" frameRate="60/1" maxWidth="1920" maxHeight="1080" par="16:9">
 			<Representation id="1" mimeType="video/mp4" codecs="avc1.64002a" bandwidth="10240000" width="1920" height="1080" sar="1:1">
-				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="686">
+				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="264">
 					<SegmentTimeline>
-						<S t="65760256" d="95728" />
-						<S d="96272" />
-						<S d="30128" />
+						<S t="25247984" d="96272" />
+						<S d="95728" />
+						<S d="10928" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>

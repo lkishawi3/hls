@@ -1,42 +1,44 @@
-import React from "react";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
-import 'videojs-contrib-dash';
+import React, { useEffect, useRef } from 'react';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import 'videojs-contrib-hls';
 
-class VideoPlayer extends React.Component {
-    componentDidMount() {
-        console.log(this.props);
-        this._isMounted = true;
-        setTimeout(() => {
-            if (this._isMounted) {
-                this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
-                    console.log("onPlayerReady", this);
-                });
-            }
-        }, 0);
-    }
-    
-    componentWillUnmount() {
-        this._isMounted = false;
-        if (this.player) {
-            this.player.dispose();
+const VideoPlayer = ({ sources }) => {
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
+
+  useEffect(() => {
+    if (sources && sources.length > 0) {
+      if (playerRef.current) {
+        playerRef.current.dispose();
+      }
+
+      const videoElement = videoRef.current;
+      if (!videoElement) return;
+
+      const player = playerRef.current = videojs(videoElement, {
+        sources,
+        autoplay: true,
+        controls: true,
+        width: '100%',
+        height: '100%',
+      });
+
+      return () => {
+        if (player) {
+          player.dispose();
         }
+      };
     }
+  }, [sources]);
 
-// wrap the player in a div with a `data-vjs-player` attribute
-// so videojs won't create additional wrapper in the DOM
-// see https://github.com/videojs/video.js/pull/3856
-
-render() {
-    return (
-      <div> 
-        <div data-vjs-player>
-          <video ref={node => (this.videoNode = node)} className="video-js vjs-big-play-centered" />
-        </div>
+  return (
+    <div>
+      <div data-vjs-player>
+        <video ref={videoRef} className="video-js vjs-big-play-centered" />
       </div>
-        );
-    }
-}
+    </div>
+  );
+};
 
 export default VideoPlayer;
-

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Dropdown, Navbar } from 'react-bootstrap';
 import { Link, BrowserRouter as Router, useLocation, useMatch } from 'react-router-dom';
 import 'video.js/dist/video-js.css';
@@ -8,33 +8,52 @@ import './App.css';
 import VideoPlayer from './video.js';
 
 function App() {
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    width: '100%',
-    height: '100%',
-    sources: [
-      {
-        src: 'http://localhost:8001/live/test/index.m3u8',
-        type: 'application/x-mpegURL',
-      },
-    ],
+  const [url, setUrl] = useState('');
+
+  const sources = url
+    ? [
+        {
+          src: url,
+          type: 'application/x-mpegURL',
+        },
+      ]
+    : [];
+
+  const handleInitialize = (inputUrl) => {
+    setUrl(inputUrl);
   };
 
   return (
     <Router>
-      <AppContent videoJsOptions={videoJsOptions} />
+      <AppContent
+        sources={sources}
+        url={url}
+        setUrl={setUrl}
+        handleInitialize={handleInitialize}
+      />
     </Router>
   );
 }
 
-function InputFields() {
+function InputFields({ url, setUrl, handleInitialize }) {
+  const [inputUrl, setInputUrl] = useState('');
+
+  const handleUrlChange = (e) => {
+    setInputUrl(e.target.value);
+  };
+
   return (
     <div className="input-wrapper">
       <h2>Input</h2>
       <div className="input-group">
         <label htmlFor="url">URL:</label>
-        <input type="text" id="url" placeholder="Enter URL" />
+        <input
+          type="text"
+          id="url"
+          placeholder="Enter URL"
+          value={inputUrl}
+          onChange={handleUrlChange}
+        />
       </div>
       <div className="input-group">
         <label htmlFor="key">Key:</label>
@@ -48,11 +67,12 @@ function InputFields() {
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" placeholder="Enter Password" />
       </div>
+      <button onClick={() => handleInitialize(inputUrl)}>Initialize</button>
     </div>
   );
 }
 
-function AppContent({ videoJsOptions }) {
+function AppContent({ sources, url, setUrl, handleInitialize }) {
   const location = useLocation();
   const pageTitle = location.pathname.substring(1);
   const match = useMatch("/input");
@@ -85,9 +105,9 @@ function AppContent({ videoJsOptions }) {
       <div className="app-container">
         <div className="player-input-wrapper">
           <div className="player-wrapper">
-            <VideoPlayer {...videoJsOptions} />
+            <VideoPlayer sources={sources} />
           </div>
-          {isInputPage && <InputFields />}
+          {isInputPage && <InputFields url={url} setUrl={setUrl} handleInitialize={handleInitialize} />}
         </div>
       </div>
     </div>
