@@ -1,0 +1,45 @@
+Node.js Backend: This will handle the RTMP or SRT streams, convert them to HLS using libraries like node-media-server, and interact with FFmpeg for video processing. It will also serve your React application and handle any API requests from the frontend.
+
+React Frontend: This will provide the user interface for your application. It will display the video player, timeline for scrubbing, and any other controls or features you want to provide. It will make requests to your Node.js backend to get the video data, create highlights, etc.
+
+cd hls-frontend: This command changes your current directory to the hls-frontend directory. This is where your React application lives.
+
+npm start: This command starts the development server for your React application. Once the server is running, you can open your application in a web browser.
+
+After running these commands, you should be able to see your new React application by opening a web browser and going to http://localhost:3000.
+
+const hlsSource = 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8';
+
+# Project Notes
+
+## Frontend Setup
+
+1. **Change directory to `hls-frontend`**: Use the command `cd hls-frontend`. This is where your React application lives.
+
+2. **Start the development server**: Use the command `npm start`. This starts the development server for your React application. Once the server is running, you can open your application in a web browser by going to `http://localhost:3000`.
+
+3. **HLS Source**: The HLS source for the video player is set to `'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8'`.
+
+## Backend Development (Node.js + node-media-server + FFmpeg)
+
+In the `hls-backend` directory, you'll need to write the code to handle RTMP or SRT streams and convert them to HLS. This will involve using the `node-media-server` library and possibly interacting with FFmpeg for video processing. You'll also need to set up API endpoints that your frontend can call to get the video data and create highlights.
+
+## Frontend Development (React)
+
+
+Develop the Backend (Node.js + node-media-server + FFmpeg)
+In your hls-backend directory, you'll need to write the code to handle RTMP or SRT streams and convert them to HLS. This will involve using the node-media-server library and possibly interacting with FFmpeg for video processing. You'll also need to set up API endpoints that your frontend can call to get the video data and create highlights.
+
+Develop the Frontend (React)
+In your hls-frontend directory, you'll need to write the React code for your user interface. This will involve creating components for the video player, timeline, and any other controls or features you want to provide. You'll also need to write code to make requests to your backend API and handle the responses.
+
+Connect Frontend and Backend
+Once you have your backend and frontend developed, you'll need to connect them. This will involve making requests from your frontend to your backend API, and handling the responses.
+
+Test Your Application
+After you've connected your frontend and backend, you should test your application to make sure everything works as expected. This will involve trying out all the features of your application and checking that they work correctly.
+
+Deploy Your Application
+Once you're happy with your application and everything works correctly, you can deploy it. This will involve setting up a server to host your application, and possibly setting up a domain name for your application.
+
+Remember, each of these steps is a big task in itself, and you'll likely need to do a lot of learning and problem-solving along the way. But don't worry, there are plenty of resources available to help you, and you can always ask for help if you get stuck. Good luck!
