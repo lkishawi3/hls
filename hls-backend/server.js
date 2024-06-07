@@ -1,10 +1,19 @@
 const express = require('express');
 const NodeMediaServer = require('node-media-server');
+const cors = require('cors');
 const path = require('path');
-
+const ffmpeg = require('fluent-ffmpeg');
 const app = express();
 
+ffmpeg.setFfmpegPath('/usr/local/bin/ffmpeg');
+
+app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:3000',
+}));
 app.use('/live', express.static(path.join(__dirname, 'media/live')));
+
+app.use('/media', express.static(path.join(__dirname, 'media')));
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -37,13 +46,34 @@ const config = {
   }
 };
 
-// Create a new instance of NodeMediaServer with the config
 const nms = new NodeMediaServer(config);
 
-// Start the server
 nms.run();
+
+app.post('/', (req, res) => {
+  console.log('Received POST request'); // Log when the route is hit
+
+  const { startTime, endTime, streamUrl } = req.body;
+  console.log('Request body:', req.body); // Log the request body
+
+  ffmpeg()
+    .input(streamUrl)
+    .seekInput(startTime)
+    .duration(endTime - startTime)
+    .output(`media/clips/clip_${Date.now()}.mp4`)
+    .on('end', () => {
+      console.log('Conversion finished');
+      res.json({ clipPath: `media/clips/clip_${Date.now()}.mp4` });
+    })
+    .on('error', (err) => {
+      console.error('Error:', err);
+      res.status(500).json({ error: 'Error converting video' });
+    })
+    .run();
+});
+
+app.listen(3001, () => console.log('Server running on port 3001'));
 
 app.listen(8000, () => {
   console.log('Server is running on port 8000');
 });
-

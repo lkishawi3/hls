@@ -131,13 +131,54 @@ function AppContent({ sources, url, setUrl, handleInitialize, playerRef }) {
     }
   };
   
-  const handleEndHighlight = () => {
+  const handleEndHighlight = async () => {
     if (playerRef.current && tempHighlightStart !== null) {
       const endTime = playerRef.current.currentTime();
       const newHighlight = { start: tempHighlightStart, end: endTime };
       setHighlights((prevHighlights) => [...prevHighlights, newHighlight]);
       console.log('Highlight saved:', newHighlight);
-      setTempHighlightStart(null);
+  
+      try {
+        const response = await fetch('http://localhost:3001/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            startTime: newHighlight.start,
+            endTime: newHighlight.end,
+            streamUrl: url,
+          }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Clip created:', data.clipPath);
+          // Fetch the file data
+          fetch(`http://localhost:3001/${data.clipPath}`)
+            .then(res => res.blob())
+            .then(blob => {
+              // Initiate download
+              const downloadLink = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = downloadLink;
+              a.download = data.clipPath.split('/').pop(); // Use the filename from the server
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(downloadLink);
+            })
+            .catch(err => {
+              console.error('Error downloading file:', err);
+            });
+        } else {
+          const data = await response.json();
+          console.error('Error creating clip:', data.error);
+        }
+  
+        setTempHighlightStart(null);
+      } catch (error) {
+        console.error('Error sending highlight data:', error);
+      }
     }
   };
   
@@ -145,7 +186,7 @@ function AppContent({ sources, url, setUrl, handleInitialize, playerRef }) {
     setPrefix(e.target.value);
     localStorage.setItem('prefix', e.target.value);
   };
-
+  
   const handleSuffixChange = (e) => {
     setSuffix(e.target.value);
     localStorage.setItem('suffix', e.target.value);
