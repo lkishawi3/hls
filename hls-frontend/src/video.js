@@ -1,36 +1,27 @@
 import React, { useEffect, useRef } from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
-import 'videojs-contrib-hls';
 
-const VideoPlayer = ({ sources }) => {
+const VideoPlayer = ({ sources, playerRef }) => {
   const videoRef = useRef(null);
-  const playerRef = useRef(null);
 
   useEffect(() => {
-    if (sources && sources.length > 0) {
-      if (playerRef.current) {
-        playerRef.current.dispose();
-      }
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
 
-      const videoElement = videoRef.current;
-      if (!videoElement) return;
-
-      const player = playerRef.current = videojs(videoElement, {
-        sources,
+    if (!playerRef.current) {
+      playerRef.current = videojs(videoElement, {
         autoplay: true,
         controls: true,
         width: '100%',
         height: '100%',
       });
-
-      return () => {
-        if (player) {
-          player.dispose();
-        }
-      };
     }
-  }, [sources]);
+
+    if (sources && sources.length > 0) {
+      playerRef.current.src(sources);
+    }
+  }, [sources, playerRef]);
 
   return (
     <div>

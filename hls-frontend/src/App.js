@@ -1,21 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Dropdown, Navbar } from 'react-bootstrap';
 import { Link, BrowserRouter as Router, useLocation, useMatch } from 'react-router-dom';
 import 'video.js/dist/video-js.css';
 import 'videojs-contrib-hls';
 import './App.css';
-import VideoPlayer from './video.js';
+import VideoPlayerRef from './video.js';
 
 function App() {
   const [url, setUrl] = useState('');
-
-  useEffect(() => {
-    const storedUrl = localStorage.getItem('videoUrl');
-    if (storedUrl) {
-      setUrl(storedUrl);
-    }
-  }, []);
+  const playerRef = useRef(null);
 
   const sources = url
     ? [
@@ -27,9 +21,13 @@ function App() {
     : [];
 
   const handleInitialize = (inputUrl) => {
+    localStorage.removeItem('videoUrl');
     setUrl(inputUrl);
     localStorage.setItem('videoUrl', inputUrl);
+    console.log('URL set:', inputUrl);
   };
+
+  console.log('Sources:', sources);
 
   return (
     <Router>
@@ -38,17 +36,41 @@ function App() {
         url={url}
         setUrl={setUrl}
         handleInitialize={handleInitialize}
+        playerRef={playerRef}
       />
     </Router>
   );
 }
 
-function InputFields({ url, setUrl, handleInitialize }) {
+function InputFields({ url, setUrl, handleInitialize, playerRef }) {
   const [inputUrl, setInputUrl] = useState(localStorage.getItem('videoUrl') || '');
+  const [prefix, setPrefix] = useState(localStorage.getItem('prefix') || '');
+  const [suffix, setSuffix] = useState(localStorage.getItem('suffix') || '');
 
   const handleUrlChange = (e) => {
     setInputUrl(e.target.value);
     localStorage.setItem('url', e.target.value);
+  };
+
+  const handlePrefixChange = (e) => {
+    setPrefix(e.target.value);
+    localStorage.setItem('prefix', e.target.value);
+  };
+
+  const handleSuffixChange = (e) => {
+    setSuffix(e.target.value);
+    localStorage.setItem('suffix', e.target.value);
+  };
+
+  const handleRefresh = () => {
+    setInputUrl('');
+    if (playerRef.current) {
+      const playerRefElement = playerRef.current.el();
+      const parentElement = playerRefElement.parentNode;
+      parentElement.removeChild(playerRefElement);
+    }
+    localStorage.removeItem('videoUrl');
+    handleInitialize('');
   };
 
   return (
@@ -76,19 +98,61 @@ function InputFields({ url, setUrl, handleInitialize }) {
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" placeholder="Enter Password" />
       </div>
-      <button onClick={() => handleInitialize(inputUrl)}>Initialize</button>
+      <div className="button-group">
+        <button onClick={() => handleInitialize(inputUrl)}>Initialize</button>
+        <button className="refresh-button" onClick={handleRefresh}>
+          Refresh
+        </button>
+      </div>
     </div>
   );
 }
 
-function AppContent({ sources, url, setUrl, handleInitialize }) {
+function AppContent({ sources, url, setUrl, handleInitialize, playerRef }) {
   const location = useLocation();
   const pageTitle = location.pathname.substring(1);
   const match = useMatch("/input");
   const isInputPage = match !== null;
+  const [highlights, setHighlights] = useState([]);
+  const [tempHighlightStart, setTempHighlightStart] = useState(null);
+  const [prefix, setPrefix] = useState(localStorage.getItem('prefix') || '');
+  const [suffix, setSuffix] = useState(localStorage.getItem('suffix') || '');
+
+  const handleNewHighlight = () => {
+    setTempHighlightStart(null);
+    setHighlights(prevHighlights => [...prevHighlights, { start: tempHighlightStart, end: playerRef.current.currentTime() }]);
+  };
+
+  const handleStartHighlight = () => {
+    if (playerRef.current) {
+      const startTime = playerRef.current.currentTime();
+      setTempHighlightStart(startTime);
+      console.log('Highlight start time:', startTime);
+    }
+  };
+  
+  const handleEndHighlight = () => {
+    if (playerRef.current && tempHighlightStart !== null) {
+      const endTime = playerRef.current.currentTime();
+      const newHighlight = { start: tempHighlightStart, end: endTime };
+      setHighlights((prevHighlights) => [...prevHighlights, newHighlight]);
+      console.log('Highlight saved:', newHighlight);
+      setTempHighlightStart(null);
+    }
+  };
+  
+  const handlePrefixChange = (e) => {
+    setPrefix(e.target.value);
+    localStorage.setItem('prefix', e.target.value);
+  };
+
+  const handleSuffixChange = (e) => {
+    setSuffix(e.target.value);
+    localStorage.setItem('suffix', e.target.value);
+  };
 
   return (
-    <div className={isInputPage ? 'input-page' : ''}>
+    <div className={isInputPage ? 'input-page' : 'dashboard'}>
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>
@@ -110,13 +174,47 @@ function AppContent({ sources, url, setUrl, handleInitialize }) {
             </Dropdown.Menu>
           </Dropdown>
         </Container>
-      </Navbar>
+        </Navbar>
       <div className="app-container">
         <div className="player-input-wrapper">
           <div className="player-wrapper">
-            <VideoPlayer sources={sources} />
+            <VideoPlayerRef sources={sources} playerRef={playerRef} />
           </div>
-          {isInputPage && <InputFields url={url} setUrl={setUrl} handleInitialize={handleInitialize} />}
+          {isInputPage ? (
+          <div className="input-fields-container">
+            <InputFields
+              url={url}
+              setUrl={setUrl}
+              handleInitialize={handleInitialize}
+              playerRef={playerRef}
+            />
+            </div>
+          ) : (
+            <div className="input-wrapper">
+              <button className="highlight-button" onClick={handleNewHighlight}>New</button>
+              <button className="highlight-button" onClick={handleStartHighlight}>Start</button>
+              <button className="highlight-button" onClick={handleEndHighlight}>End</button>
+              <div className="input-group-name">
+                <label htmlFor="prefix">Prefix:</label>
+                <input
+                  type="text"
+                  id="prefix"
+                  placeholder="Enter Prefix"
+                  value={prefix}
+                  onChange={handlePrefixChange}
+                />
+
+                <label htmlFor="suffix">Suffix:</label>
+                <input
+                  type="text"
+                  id="suffix"
+                  placeholder="Enter Suffix"
+                  value={suffix}
+                  onChange={handleSuffixChange}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

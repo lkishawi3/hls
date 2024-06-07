@@ -34,7 +34,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: calc(100vh - 100px);
+  margin-top: 50px;
+}
+
+.highlight-button {
+  background-color: #525252;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 .player-input-wrapper {
@@ -42,17 +56,37 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 200px;
+  max-width: 1200px;
+}
+
+.dashboard .player-wrapper {
+  margin-top: 0px;
+}
+
+.dashboard .player-input-wrapper {
+  flex-direction: column;
+
 }
 
 .player-wrapper {
+  margin-bottom: 0px;
+}
+
+.input-page .app-container {
+  margin-top: 4px;
+}
+
+.input-page .player-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input-page .player-wrapper {
   margin-right: 20px;
 }
 
-.input-wrapper {
-  background-color: #1c1c1c;
-  padding: 20px;
-  border-radius: 5px;
+.input-page .input-fields-container {
+  width: 300px;
 }
 
 .input-wrapper h2 {
@@ -90,11 +124,32 @@
   width: 200px;
   padding: 5px;
   font-size: 14px;
+  margin-right: 10px;
+}
+
+.input-group-name {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-name label {
+  color: #fff;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.input-group-name input {
+  width: 100px;
+  padding: 5px;
+  font-size: 14px;
+  margin-right: 10px;
 }
 
 .video-js {
   height: 540px;
   width: 960px;
+  margin-top: 0px;
   padding-top: 56.25%;
 }
 
@@ -145,11 +200,6 @@ body {
 
 h1 {
   margin: 0;
-}
-
-.input-page .player-wrapper {
-  float: right;
-  margin-right: 25%;
 }
 
 .custom-dropdown .dropdown-toggle::after {
