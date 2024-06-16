@@ -14,6 +14,7 @@ app.use(cors({
 app.use('/live', express.static(path.join(__dirname, 'media/live')));
 
 app.use('/media', express.static(path.join(__dirname, 'media')));
+app.use('/media/clips', express.static(path.join(__dirname, 'media/clips')));
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -53,6 +54,7 @@ nms.run();
 app.post('/', (req, res) => {
   console.log('Received POST request'); // Log when the route is hit
 
+  const clipFileName = `clip_${Date.now()}.mp4`;
   const { startTime, endTime, streamUrl } = req.body;
   console.log('Request body:', req.body); // Log the request body
 
@@ -60,10 +62,18 @@ app.post('/', (req, res) => {
     .input(streamUrl)
     .seekInput(startTime)
     .duration(endTime - startTime)
-    .output(`media/clips/clip_${Date.now()}.mp4`)
+    .outputOptions('-c:v libx264')
+    .outputOptions('-preset fast')
+    .outputOptions('-crf 23')
+    .outputOptions('-c:a aac')
+    .outputOptions('-movflags +faststart')
+    .output(`media/clips/${clipFileName}`)
     .on('end', () => {
       console.log('Conversion finished');
-      res.json({ clipPath: `media/clips/clip_${Date.now()}.mp4` });
+      console.log('Clip created:', clipFileName);
+      const responseData = { clipName: clipFileName };
+      console.log('Response data:', responseData);
+      res.json(responseData);
     })
     .on('error', (err) => {
       console.error('Error:', err);

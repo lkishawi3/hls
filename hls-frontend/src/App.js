@@ -155,14 +155,14 @@ function AppContent({ sources, url, setUrl, handleInitialize, playerRef }) {
           const data = await response.json();
           console.log('Clip created:', data.clipPath);
           // Fetch the file data
-          fetch(`http://localhost:3001/${data.clipPath}`)
+          fetch(`http://localhost:3001/media/clips/${data.clipName}`)
             .then(res => res.blob())
             .then(blob => {
               // Initiate download
               const downloadLink = window.URL.createObjectURL(blob);
               const a = document.createElement('a');
               a.href = downloadLink;
-              a.download = data.clipPath.split('/').pop(); // Use the filename from the server
+              a.download = data.clipName; 
               document.body.appendChild(a);
               a.click();
               window.URL.revokeObjectURL(downloadLink);
