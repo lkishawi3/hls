@@ -62,10 +62,16 @@ app.post('/', (req, res) => {
     .seekInput(startTime)
     .duration(endTime - startTime)
     .outputOptions('-c:v libx264')
-    .outputOptions('-preset fast')
+    .outputOptions('-crf 18')
+    .outputOptions('-preset slow')
     .outputOptions('-crf 23')
     .outputOptions('-c:a aac')
     .outputOptions('-movflags +faststart')
+    .outputOptions('-avoid_negative_ts make_zero')
+    .outputOptions('-keyint_min 2')
+    .outputOptions('-g 2')
+    .videoFilter('setpts=PTS-STARTPTS')
+    .audioFilter('aresample=async=1')
     .output(`media/clips/${clipFileName}`)
     .on('end', () => {
       console.log('Conversion finished');

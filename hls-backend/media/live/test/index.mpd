@@ -5,13 +5,13 @@
 	xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
 	profiles="urn:mpeg:dash:profile:isoff-live:2011"
 	type="dynamic"
-	minimumUpdatePeriod="PT5S"
-	suggestedPresentationDelay="PT5S"
-	availabilityStartTime="2024-06-29T10:20:15.260Z"
-	publishTime="2024-06-29T10:37:08.894Z"
-	timeShiftBufferDepth="PT17.9S"
+	minimumUpdatePeriod="PT6S"
+	suggestedPresentationDelay="PT6S"
+	availabilityStartTime="2024-06-29T11:25:48.937Z"
+	publishTime="2024-06-29T11:27:58.685Z"
+	timeShiftBufferDepth="PT18.0S"
 	maxSegmentDuration="PT5.0S"
-	minBufferTime="PT11.9S">
+	minBufferTime="PT12.0S">
 	<ProgramInformation>
 	</ProgramInformation>
 	<ServiceDescription id="0">
@@ -20,21 +20,22 @@
 		<AdaptationSet id="0" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true">
 			<Representation id="0" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="163840" audioSamplingRate="48000">
 				<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2" />
-				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="200">
+				<SegmentTemplate timescale="48000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="24">
 					<SegmentTimeline>
-						<S t="47887344" d="240624" r="1" />
+						<S t="5534688" d="240624" />
 						<S d="240672" />
+						<S d="240624" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet id="1" contentType="video" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true" frameRate="60/1" maxWidth="1920" maxHeight="1080" par="16:9">
-			<Representation id="1" mimeType="video/mp4" codecs="avc1.64002a" bandwidth="9216000" width="1920" height="1080" sar="1:1">
-				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="167">
+			<Representation id="1" mimeType="video/mp4" codecs="avc1.64002a" bandwidth="5120000" width="1920" height="1080" sar="1:1">
+				<SegmentTemplate timescale="16000" initialization="init-stream$RepresentationID$.m4s" media="chunk-stream$RepresentationID$-$Number%05d$.m4s" startNumber="19">
 					<SegmentTimeline>
-						<S t="15935984" d="96000" />
+						<S t="1728256" d="85600" />
+						<S d="106128" />
 						<S d="96272" />
-						<S d="95728" />
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>
