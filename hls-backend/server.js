@@ -12,7 +12,6 @@ app.use(cors({
   origin: 'http://localhost:3000',
 }));
 app.use('/live', express.static(path.join(__dirname, 'media/live')));
-
 app.use('/media', express.static(path.join(__dirname, 'media')));
 app.use('/media/clips', express.static(path.join(__dirname, 'media/clips')));
 
